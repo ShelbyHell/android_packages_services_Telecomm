@@ -1653,16 +1653,10 @@ public class ConnectionServiceWrapper extends ServiceBinder implements
                                 call.shouldAttachToExistingConnection(),
                                 call.isUnknown(),
                                 Log.getExternalSession(TELECOM_ABBREVIATION));
-
-                    } catch (RemoteException e) {
-                        Log.e(this, e, "Failure to createConference -- %s", getComponentName());
-                        mPendingResponses.remove(callId).handleCreateConferenceFailure(
-                                new DisconnectCause(DisconnectCause.ERROR, e.toString()));
-                    }
-                } else {
-                    Log.w(this,"Failure to createConference -- %s", getComponentName());
+                } catch (RemoteException e) {
+                    Log.e(this, e, "Failure to createConference -- %s", getComponentName());
                     mPendingResponses.remove(callId).handleCreateConferenceFailure(
-                            new DisconnectCause(DisconnectCause.ERROR));
+                            new DisconnectCause(DisconnectCause.ERROR, e.toString()));
                 }
             }
 
@@ -1785,12 +1779,6 @@ public class ConnectionServiceWrapper extends ServiceBinder implements
                         Log.e(this, e, "Failure to createConnection -- %s", getComponentName());
                         mPendingResponses.remove(callId).handleCreateConnectionFailure(
                                 new DisconnectCause(DisconnectCause.ERROR, e.toString()));
-                    }
-                } else {
-                    Log.w(this, "Failure to createConnection; no service interface -- %s",
-                            getComponentName());
-                    mPendingResponses.remove(callId).handleCreateConnectionFailure(
-                            new DisconnectCause(DisconnectCause.ERROR));
                 }
             }
 
